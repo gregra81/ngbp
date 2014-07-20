@@ -1,26 +1,26 @@
-# The `src/app/home` Directory
+# The `src/app/dashboard` Directory
 
 ## Overview
 
 ```
 src/
   |- app/
-  |  |- home/
-  |  |  |- home.js
-  |  |  |- home.less
-  |  |  |- home.spec.js
-  |  |  |- home.tpl.html
+  |  |- dashboard/
+  |  |  |- dashboard.js
+  |  |  |- dashboard.less
+  |  |  |- dashboard.spec.js
+  |  |  |- dashboard.tpl.html
 ```
 
-- `home.js` - defines the module.
-- `home.less` - module-specific styles; this file is imported into
-  `src/less/main.less` manually by the developer.
-- `home.spec.js` - module unit tests.
-- `home.tpl.html` - the route template.
+- `dashboard.js` - defines the module.
+- `dashboard.less` - module-specific styles; this file is imported into
+  `src/less/dashboard.less` manually by the developer.
+- `dashboard.spec.js` - module unit tests.
+- `dashboard.tpl.html` - the route template.
 
-## `home.js`
+## `dashboard.js`
 
-This boilerplate is too simple to demonstrate it, but `src/app/home` could have
+This boilerplate is too simple to demonstrate it, but `src/app/dashboard` could have
 several sub-folders representing additional modules that would then be listed
 as dependencies of this one.  For example, a `note` section could have the
 submodules `note.create`, `note.delete`, `note.search`, etc.
@@ -32,7 +32,7 @@ The dependencies block is also where component dependencies should be
 specified, as shown below.
 
 ```js
-angular.module( 'ngBoilerplate.home', [
+angular.module( 'gingerAssignment.dashboard', [
   'ui.router',
   'titleService',
   'plusOne'
@@ -51,15 +51,15 @@ title (see the app.js controller).
 
 ```js
 .config(function config( $stateProvider ) {
-  $stateProvider.state( 'home', {
-    url: '/home',
+  $stateProvider.state( 'dashboard', {
+    url: '/dashboard',
     views: {
       "main": {
-        controller: 'HomeCtrl',
-        templateUrl: 'home/home.tpl.html'
+        controller: 'DashboardCtrl',
+        templateUrl: 'dashboard/dashboard.tpl.html'
       }
     },
-    data:{ pageTitle: 'Home' }
+    data:{ pageTitle: 'Dashboard' }
   });
 })
 ```
@@ -68,6 +68,6 @@ And of course we define a controller for our route, though in this case it does
 nothing.
 
 ```js
-.controller( 'HomeCtrl', function HomeController( $scope ) {
+.controller( 'DashboardCtrl', function DashboardController( $scope ) {
 })
 ```

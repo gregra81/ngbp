@@ -12,9 +12,8 @@
  * The dependencies block here is also where component dependencies should be
  * specified, as shown below.
  */
-angular.module( 'ngBoilerplate.home', [
-  'ui.router',
-  'plusOne'
+angular.module( 'gingerAssignment.dashboard', [
+  'ui.router'
 ])
 
 /**
@@ -23,22 +22,56 @@ angular.module( 'ngBoilerplate.home', [
  * this way makes each module more "self-contained".
  */
 .config(function config( $stateProvider ) {
-  $stateProvider.state( 'home', {
-    url: '/home',
+  $stateProvider.state( 'dashboard', {
+    url: '/dashboard',
     views: {
       "main": {
-        controller: 'HomeCtrl',
-        templateUrl: 'home/home.tpl.html'
+        controller: 'DashboardCtrl',
+        templateUrl: 'dashboard/dashboard.tpl.html'
       }
     },
-    data:{ pageTitle: 'Home' }
+    data:{ pageTitle: 'Dashboard' }
   });
 })
 
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope ) {
+.controller( 'DashboardCtrl', function DashboardController( $scope ) {
+
+	$scope.services = [
+                   {name:'Definitions', value:1},
+                   {name:'Synonyms', value:2},
+                   {name:'Rephrase', value:3}
+                   ];
+
+	$scope.service = $scope.services[0]; 
+	
+	$scope.activeServices = [];
+	
+	/**
+	 * Add a new service
+	 */
+	$scope.addService = function(service){
+		if ($scope.activeServices.indexOf(service)<0){
+			$scope.activeServices.push(service);
+		}else{
+			alert('This service is already active');
+		}
+	};
+	
+	/**
+	 * Use the service
+	 */
+	$scope.useService = function(service,text){
+		if ($scope.activeServices.length){
+			service.content = 'foo';
+		}else{
+			alert('You need to add at least one service to use that feature');
+		}
+	};	
+	
+	
 })
 
 ;

@@ -1,0 +1,29 @@
+<div id="services-manager">
+	<fieldset>
+		<legend>Administration Panel</legend>
+		<div class="left">
+			<button ng-click="addService(service)">Add service</button>
+			<div id="select-services">
+				<select ng-model="service" ng-options="s.name for s in services"></select>
+			</div>
+		</div>	
+		<div class="left">
+			<input ng-model="text" placeholder="Enter Text" />
+			<button ng-click="useService(service,text)">Activate</button>
+		</div>
+	</fieldset>
+
+</div>
+<h2>Service Boxes</h2>
+
+<div class="services">
+  <div class="row">
+    <div ng-repeat="service in activeServices" class="col-xs-12 col-sm-6 col-md-4" data-service-box>
+      <h4>{{service.name}}</h4>
+      <p>
+      	{{service.content}}
+      </p>
+    </div>
+  </div>
+</div>
+
