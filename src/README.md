@@ -8,13 +8,12 @@ tests of such code.
 ```
 src/
   |- app/
-  |  |- about/
-  |  |- home/
+  |  |- dashboard/
   |  |- app.js
   |  |- app.spec.js
   |- assets/
   |- common/
-  |  |- plusOne/
+  |  |- directives/
   |- less/
   |  |- main.less
   |  |- variables.less
