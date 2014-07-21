@@ -37,7 +37,8 @@ angular.module( 'gingerAssignment.dashboard', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'DashboardCtrl', function DashboardController( $scope ) {
+.controller( 'DashboardCtrl', function DashboardController( $scope, GingerService, MESSAGES ) {
+
 
 	$scope.services = [
                    {name:'Definitions', value:1},
@@ -45,6 +46,12 @@ angular.module( 'gingerAssignment.dashboard', [
                    {name:'Rephrase', value:3}
                    ];
 
+	//Set some defaults
+	for (var i in $scope.services){
+		$scope.services[i].isMaximized = true;
+		$scope.services[i].maximizedStatusText = MESSAGES.minText;
+	}
+	
 	$scope.service = $scope.services[0]; 
 	
 	$scope.activeServices = [];
@@ -64,15 +71,120 @@ angular.module( 'gingerAssignment.dashboard', [
 	 * Use the service
 	 */
 	$scope.useService = function(service,text){
-		if ($scope.activeServices.length){
-			service.content = 'foo';
+		if ($scope.activeServices.indexOf(service)>-1){
+			if (text){
+				$scope.setServiceBoxViews(service);
+				switch (service.value){
+				case 1:// Definitions
+					console.log('Definitions');
+					GingerService.getDefinition(text).then(function(response){
+						console.log(response);
+						var content = '';
+						// @todo
+						service.content = content;
+					});
+					break;
+				case 2:// Synonyms
+					console.log('Synonyms');
+					GingerService.getSynonyms(text).then(function(response){
+						console.log(response);
+						var content = '';
+						// @todo
+						service.content = content;
+					});
+					break;
+				case 3:// Rephrase
+					console.log('Rephrase');
+					GingerService.getRephrase(text).then(function(response){
+						console.log(response);
+						var content = '';
+						angular.forEach(Sentences, function(key, value){
+							content += value.Sentence + '\n';
+						});
+						service.content = content;
+					});		
+					break;
+				default:
+					alert('No such service, please try again');
+				}
+			}
 		}else{
-			alert('You need to add at least one service to use that feature');
+			alert('You need to activate ' + service.name + ' first');
 		}
 	};	
+
+	$scope.setServiceBoxViews = function(selectedService){
+		angular.forEach($scope.activeServices, function(value,key ){
+			value.maximizedStatusText = MESSAGES.maxText;
+			value.isMaximized = false;
+		});
+		selectedService.isMaximized = true;
+		selectedService.maximizedStatusText = MESSAGES.minText;
+	};
 	
 	
 })
 
+.constant('MESSAGES', {
+	maxText: 'Maximize',
+	minText: 'Minimize'
+})
+/**
+ * Our API calls
+ */
+.service('GingerService', function($http){
+	var baseUrl = 'http://services.gingersoftware.com/',
+		apiKey = 'BrowserStandalone';
+	/**
+	 * General function for ajax calls
+	 */
+	var doServerCall = function(apiRequest){
+		return $http.get(baseUrl + apiRequest).then(
+				function(res) {
+					return res;
+				});
+	};
+	
+	/*** PUBLIC METHODS ***/
+	
+	/**
+	 * Get definition
+	 */
+	this.getDefinition = function(string){
+		var request = 'dictionary/json/GetDefinitions' + 
+						'?apiKey=' + apiKey +
+						'&userIdentifier=ginger' +
+						'&clientVersion=1.2' +
+						'&word=' + string +
+						'&lang=us';
+		return doServerCall(request);
+	};
+	
+	/**
+	 * Get Synonyms
+	 */
+	this.getSynonyms = function(string){
+		var request = 'dictionary/json/GetSynonyms' + 
+						'?apiKey=' + apiKey +
+						'&userIdentifier=ginger' +
+						'&clientVersion=1.2' +
+						'&word=' + string +
+						'&lang=us';
+		return doServerCall(request);
+	};
+	
+	/**
+	 * Get Synonyms
+	 */
+	this.getRephrase = function(string){
+		var request = 'rephrase/rephrase' + 
+						'?apiKey=' + apiKey +
+						'&version=1' +
+						'&clientVersion=1.2' +
+						'&s=' + string;
+		return doServerCall(request);
+	};
+		
+})
 ;
 

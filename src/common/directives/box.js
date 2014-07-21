@@ -3,19 +3,24 @@
 
 	angular.module('gingerAssignment.box', [])
 
-	.directive('serviceBox', function() {
+	.directive('serviceBox', function(MESSAGES) {
 		return {
 			restrict : 'A',
 			replace : true,
 			link : function(scope, elem, attrs) {
-				elem.bind('click', function() {
-					elem.css('background-color', 'black');
+
+				elem.find('button').bind('click', function() {
+
+
 					scope.$apply(function() {
-						scope.color = "black";
+						console.log(scope.service);
+						if (scope.service.isMaximized){
+							scope.service.isMaximized = false;
+							scope.service.maximizedStatusText = MESSAGES.maxText;
+						}else{
+							scope.setServiceBoxViews(scope.service);
+						}	
 					});
-				});
-				elem.bind('mouseover', function() {
-					elem.css('cursor', 'pointer');
 				});
 			}
 		};

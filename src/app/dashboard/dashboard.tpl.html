@@ -8,7 +8,7 @@
 			</div>
 		</div>	
 		<div class="left">
-			<input ng-model="text" placeholder="Enter Text" />
+			<input ng-model="text" placeholder="Enter Text" required />
 			<button ng-click="useService(service,text)">Activate</button>
 		</div>
 	</fieldset>
@@ -18,11 +18,12 @@
 
 <div class="services">
   <div class="row">
-    <div ng-repeat="service in activeServices" class="col-xs-12 col-sm-6 col-md-4" data-service-box>
-      <h4>{{service.name}}</h4>
-      <p>
-      	{{service.content}}
-      </p>
+    <div ng-repeat="service in activeServices" 
+    	ng-class="{'maximized': service.isMaximized, 'minimized': !service.isMaximized}" 
+    	class="col-xs-12 col-sm-6 col-md-4" data-service-box>
+    	<button>{{service.maximizedStatusText}}</button>
+      	<h4>{{service.name}}</h4>
+      	<p>{{service.content}}</p>
     </div>
   </div>
 </div>

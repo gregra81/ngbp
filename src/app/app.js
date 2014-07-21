@@ -7,8 +7,15 @@ angular.module('gingerAssignment', [
   'gingerAssignment.box'
 ])
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
-  $urlRouterProvider.otherwise( '/dashboard' );
+.config( function myAppConfig ( $stateProvider, $urlRouterProvider, $httpProvider ) {
+	$urlRouterProvider.otherwise( '/dashboard' );
+  
+	// It appears angular native http methods
+	// don't fire well when there are CORS issues
+	// instead of putting GET in the header it uses OPTIONS
+	// this is the fix
+	$httpProvider.defaults.useXDomain = true;
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 })
 
 .run( function run () {
