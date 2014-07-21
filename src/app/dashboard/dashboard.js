@@ -109,7 +109,7 @@ angular.module('gingerAssignment.dashboard', [
                         }
                     }
                 } else {
-                    alert('You need to activate ' + service.name + ' first');
+                    alert('You need to add the service ' + service.name + ' first');
                 }
             };
 
