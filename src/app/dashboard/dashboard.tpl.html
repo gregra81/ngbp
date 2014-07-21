@@ -23,7 +23,9 @@
              class="col-xs-12 col-sm-6 col-md-4" data-service-box>
             <button>{{service.maximizedStatusText}}</button>
             <h4>{{service.name}}</h4>
-            <p>{{service.content}}</p>
+            <p><ul>
+            	<li ng-repeat="item in service.content">{{item}}</li>
+            </ul></p>
         </div>
     </div>
 </div>

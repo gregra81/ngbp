@@ -76,32 +76,41 @@ angular.module('gingerAssignment.dashboard', [
                         $scope.setServiceBoxViews(service);
                         switch (service.value) {
                             case 1:// Definitions
-                                console.log('Definitions');
                                 GingerService.getDefinition(text).then(function(response) {
-                                    console.log(response);
-                                    var content = '';
-                                    // @todo
-                                    service.content = content;
+                                    if (response.data.DefsByWord[0]){
+                                        var definitions = response.data.DefsByWord[0].DefsByPos[0].Defs;
+                                        service.content = [];
+                                        angular.forEach(definitions, function(key, value) {
+                                           service.content.push(key.Def);
+                                        });
+                                    }else{
+                                         alert('No definitions found');
+                                    }
                                 });
                                 break;
                             case 2:// Synonyms
-                                console.log('Synonyms');
                                 GingerService.getSynonyms(text).then(function(response) {
-                                    console.log(response);
-                                    var content = '';
-                                    // @todo
-                                    service.content = content;
+                                    if (response.data.SynsByPos[0]){
+                                        var synonyms = response.data.SynsByPos[0].Syns;
+                                        service.content = [];
+                                        angular.forEach(synonyms, function(key, value) {
+                                           service.content.push(key.Word);
+                                        });
+                                    }else{
+                                         alert('No synonyms found');
+                                    }
                                 });
                                 break;
                             case 3:// Rephrase
-                                console.log('Rephrase');
                                 GingerService.getRephrase(text).then(function(response) {
-                                    console.log(response);
-                                    var content = '';
-                                    angular.forEach(Sentences, function(key, value) {
-                                        content += value.Sentence + '\n';
-                                    });
-                                    service.content = content;
+                                    if (response.data.Sentences.length>0){
+                                        service.content = [];
+                                        angular.forEach(response.data.Sentences, function(key, value) {
+                                            service.content.push(key.Sentence);
+                                        });
+                                    }else{
+                                        alert('No rephrases found');
+                                    }
                                 });
                                 break;
                             default:
@@ -134,16 +143,18 @@ angular.module('gingerAssignment.dashboard', [
          */
         .service('GingerService', function($http) {
             var baseUrl = 'http://services.gingersoftware.com/',
-                    apiKey = 'BrowserStandalone';
-            /**
-             * General function for ajax calls
-             */
+                apiKey = 'BrowserStandalone',
+                userIdentifier='66a36867-b666-44c0-9ffe-8ddf90f966ac';
+           /**
+            * General function for ajax calls
+            */
             var doServerCall = function(apiRequest) {
-                return $http.get(baseUrl + apiRequest).then(
-                        function(res) {
-                            return res;
-                        });
-            };
+                apiRequest += '&callback=JSON_CALLBACK';
+                return $http.jsonp(baseUrl + apiRequest).success(
+                       function(res) {
+                           return res;
+                       });
+                };
 
             /*** PUBLIC METHODS ***/
 
@@ -153,7 +164,7 @@ angular.module('gingerAssignment.dashboard', [
             this.getDefinition = function(string) {
                 var request = 'dictionary/json/GetDefinitions' +
                         '?apiKey=' + apiKey +
-                        '&userIdentifier=ginger' +
+                        '&userIdentifier=' + userIdentifier +
                         '&clientVersion=1.2' +
                         '&word=' + string +
                         '&lang=us';
@@ -166,7 +177,7 @@ angular.module('gingerAssignment.dashboard', [
             this.getSynonyms = function(string) {
                 var request = 'dictionary/json/GetSynonyms' +
                         '?apiKey=' + apiKey +
-                        '&userIdentifier=ginger' +
+                        '&userIdentifier=' + userIdentifier +
                         '&clientVersion=1.2' +
                         '&word=' + string +
                         '&lang=us';
