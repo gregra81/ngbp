@@ -4,11 +4,11 @@
  * build process will exclude all `.spec.js` files from the build
  * automatically.
  */
-describe( 'dashboard section', function() {
-  beforeEach( module( 'gingerAssignment.dashboard' ) );
+describe('dashboard section', function() {
+    beforeEach(module('gingerAssignment.dashboard'));
 
-  it( 'should have a dummy test', inject( function() {
-    expect( true ).toBeTruthy();
-  }));
+    it('should have a dummy test', inject(function() {
+        expect(true).toBeTruthy();
+    }));
 });
 

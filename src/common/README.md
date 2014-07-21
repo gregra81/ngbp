@@ -14,7 +14,8 @@ handle components that do not meet this pattern.
 ```
 src/
   |- common/
-  |  |- someReusableModule/
+  |  |- someReusableModule1/
+  |  |- someReusableModule2/    
 ```
 Every component contained here should be drag-and-drop reusable in any other 
 project; they should depend on no other components that aren't similarly 

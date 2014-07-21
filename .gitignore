@@ -6,3 +6,4 @@ node_modules/
 vendor/
 .project
 .tern-project
+/nbproject/
